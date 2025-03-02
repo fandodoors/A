@@ -1,0 +1,110 @@
+--[[
+    📌  Doors Hub 🔥
+    🚀 Criado por ChatGPT
+    🔧 Funções:
+    ✅ God Mode
+    ✅ Auto Delete Seek
+    ✅ Infinite Yield Admin
+    ✅ Delete Figure
+    ✅ Ganhar Crucifixo ✝️
+--]]
+
+-- 🛠️ Configuração
+local ClientMode = true -- Se true, afeta apenas o Player; se false, tenta executar no server.
+
+-- 🏆 God Mode
+function GodMode()
+    local plr = game.Players.LocalPlayer
+    local char = plr.Character
+    if char and char:FindFirstChild("Humanoid") then
+        char.Humanoid:SetAttribute("Invincible", true)
+        char.Humanoid.Health = math.huge
+    end
+end
+
+-- 🏃 Auto Delete Seek
+function DeleteSeek()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("Model") and v.Name == "Seek" then
+            v:Destroy()
+        end
+    end
+end
+
+-- 🛠️ Pegar Infinite Yield Admin
+function GetInfiniteYield()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
+end
+
+-- 🧹 Delete Figure
+function DeleteFigure()
+    for _, v in pairs(workspace:GetChildren()) do
+        if v:IsA("Model") and v.Name == "Figure" then
+            v:Destroy()
+        end
+    end
+end
+
+-- ✝️ Ganhar Crucifixo
+function GiveCrucifix()
+    local plr = game.Players.LocalPlayer
+    local tool = game.ServerStorage:FindFirstChild("Crucifix") or game.ReplicatedStorage:FindFirstChild("Crucifix")
+    if tool then
+        local newTool = tool:Clone()
+        newTool.Parent = plr.Backpack
+    else
+        print("Crucifixo não encontrado!")
+    end
+end
+
+-- 📌 Criando a GUI Estilizada
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local GodButton = Instance.new("TextButton")
+local DeleteSeekButton = Instance.new("TextButton")
+local InfiniteYieldButton = Instance.new("TextButton")
+local DeleteFigureButton = Instance.new("TextButton")
+local CrucifixButton = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0, 250, 0, 320)
+Frame.Position = UDim2.new(0.2, 0, 0.2, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Frame.BorderSizePixel = 0
+Frame.Active = true
+Frame.Draggable = true
+
+UICorner.Parent = Frame
+
+Title.Parent = Frame
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundTransparency = 1
+Title.Text = " Doors Hub 🔥"
+Title.TextSize = 20
+Title.TextColor3 = Color3.fromRGB(255, 165, 0)
+Title.Font = Enum.Font.SourceSansBold
+
+function CreateButton(button, text, position, func)
+    button.Parent = Frame
+    button.Size = UDim2.new(0, 230, 0, 40)
+    button.Position = UDim2.new(0, 10, 0, position)
+    button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    button.Text = text
+    button.TextSize = 16
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.SourceSansBold
+    button.MouseButton1Click:Connect(func)
+    
+    local ButtonCorner = Instance.new("UICorner")
+    ButtonCorner.CornerRadius = UDim.new(0, 6)
+    ButtonCorner.Parent = button
+end
+
+CreateButton(GodButton, "⚡ God Mode", 50, GodMode)
+CreateButton(DeleteSeekButton, "👀 Auto Delete Seek", 100, DeleteSeek)
+CreateButton(InfiniteYieldButton, "🔑 Get Infinite Yield", 150, GetInfiniteYield)
+CreateButton(DeleteFigureButton, "🧹 Delete Figure", 200, DeleteFigure)
+CreateButton(CrucifixButton, "✝️ Ganhar Crucifixo", 250, GiveCrucifix)
