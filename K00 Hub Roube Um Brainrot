@@ -1,0 +1,94 @@
+-- Carrega a Rayfield UI
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+
+-- Cria a janela principal
+local Janela = Rayfield:CreateWindow({
+    Name = "K00 Gui - Roube Um Brainrot",
+    LoadingTitle = "Carregando...",
+    LoadingSubtitle = "Feito por Lucas",
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "PainelLucas",
+        FileName = "config_base"
+    }
+})
+
+-- Aba chamada Funções Legais
+local AbaFuncoes = Janela:CreateTab("Funções Legais")
+
+-- Variável para armazenar o texto da posição
+local textoPosicao = ""
+local campoInput = nil
+
+-- Caixa de texto para mostrar a posição
+campoInput = AbaFuncoes:CreateInput({
+    Name = "Coloque a posição aqui.",
+    PlaceholderText = "",
+    RemoveTextAfterFocusLost = false,
+    Callback = function(Texto)
+        textoPosicao = Texto
+    end
+})
+
+-- Botão para copiar a posição do jogador
+AbaFuncoes:CreateButton({
+    Name = "Copiar O Seu Local Que Você Está",
+    Callback = function()
+        local Jogador = game.Players.LocalPlayer
+        local Personagem = Jogador.Character or Jogador.CharacterAdded:Wait()
+        local HRP = Personagem:FindFirstChild("HumanoidRootPart")
+        if not HRP then return end
+
+        local pos = HRP.Position
+        local texto = string.format("%.6f, %.6f, %.6f", pos.X, pos.Y, pos.Z)
+        textoPosicao = texto
+
+        -- Atualiza o valor do input manualmente (caso o sistema permita)
+        -- Isso aqui só funciona visualmente se o Rayfield expuser o objeto. Caso não, apenas o valor interno muda.
+        setclipboard(texto) -- Copia para área de transferência (em executores que suportam)
+
+        Rayfield:Notify({
+            Title = "Posição copiada!",
+            Content = texto,
+            Duration = 4
+        })
+    end
+})
+
+-- Botão para teleportar para a base em 2.5 studs
+AbaFuncoes:CreateButton({
+    Name = "Teleportar A Sua Base",
+    Callback = function()
+        local Jogador = game.Players.LocalPlayer
+        local Personagem = Jogador.Character or Jogador.CharacterAdded:Wait()
+        local HRP = Personagem:FindFirstChild("HumanoidRootPart")
+        if not HRP then return end
+
+        local x, y, z = textoPosicao:match("([^,]+),%s*([^,]+),%s*([^,]+)")
+        if not x or not y or not z then
+            Rayfield:Notify({
+                Title = "Erro",
+                Content = "Posição inválida.",
+                Duration = 3
+            })
+            return
+        end
+
+        x, y, z = tonumber(x), tonumber(y), tonumber(z)
+        if not x or not y or not z then return end
+
+        local destino = Vector3.new(x, y, z)
+        local atual = HRP.Position
+        local direcao = (destino - atual).Unit
+        local distancia = (destino - atual).Magnitude
+        local passos = math.floor(distancia / 2.5)
+
+        for i = 1, passos do
+            atual = atual + direcao * 2.5
+            HRP.CFrame = CFrame.new(atual)
+            task.wait(0.05)
+        end
+
+        HRP.CFrame = CFrame.new(destino)
+    end
+})
