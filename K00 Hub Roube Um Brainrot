@@ -1,27 +1,22 @@
--- Carrega a Rayfield UI
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
--- Cria a janela principal
 local Janela = Rayfield:CreateWindow({
     Name = "K00 Gui - Roube Um Brainrot",
     LoadingTitle = "Carregando...",
-    LoadingSubtitle = "Feito por k00tpts5673",
+    LoadingSubtitle = "Feito por Lucas",
     ConfigurationSaving = {
         Enabled = true,
-        FolderName = "Painelk00",
+        FolderName = "PainelLucas",
         FileName = "config_base"
     }
 })
 
--- Aba chamada Funções Legais
-local AbaFuncoes = Janela:CreateTab("Funções Legais")
+local AbaBrainrot = Janela:CreateTab("Roubar O Brainrot")
 
--- Variável para armazenar o texto da posição
 local textoPosicao = ""
 local campoInput = nil
 
--- Caixa de texto para mostrar a posição
-campoInput = AbaFuncoes:CreateInput({
+campoInput = AbaBrainrot:CreateInput({
     Name = "Coloque a posição aqui.",
     PlaceholderText = "",
     RemoveTextAfterFocusLost = false,
@@ -30,8 +25,7 @@ campoInput = AbaFuncoes:CreateInput({
     end
 })
 
--- Botão para copiar a posição do jogador
-AbaFuncoes:CreateButton({
+AbaBrainrot:CreateButton({
     Name = "Copiar O Seu Local Que Você Está",
     Callback = function()
         local Jogador = game.Players.LocalPlayer
@@ -43,20 +37,17 @@ AbaFuncoes:CreateButton({
         local texto = string.format("%.6f, %.6f, %.6f", pos.X, pos.Y, pos.Z)
         textoPosicao = texto
 
-        -- Atualiza o valor do input manualmente (caso o sistema permita)
-        -- Isso aqui só funciona visualmente se o Rayfield expuser o objeto. Caso não, apenas o valor interno muda.
-        setclipboard(texto) -- Copia para área de transferência (em executores que suportam)
+        pcall(function() setclipboard(texto) end)
 
         Rayfield:Notify({
-            Title = "Posição copiada!",
+            Title = "Local copiado!",
             Content = texto,
             Duration = 4
         })
     end
 })
 
--- Botão para teleportar para a base em 2.5 studs
-AbaFuncoes:CreateButton({
+AbaBrainrot:CreateButton({
     Name = "Teleportar A Sua Base",
     Callback = function()
         local Jogador = game.Players.LocalPlayer
@@ -90,5 +81,7 @@ AbaFuncoes:CreateButton({
         end
 
         HRP.CFrame = CFrame.new(destino)
+        task.wait(0.5)
+        Jogador:Kick("Você Roubou Um Brainrot!")
     end
 })
