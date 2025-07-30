@@ -5,10 +5,10 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 local Janela = Rayfield:CreateWindow({
     Name = "K00 Gui - Roube Um Brainrot",
     LoadingTitle = "Carregando...",
-    LoadingSubtitle = "Feito por Lucas",
+    LoadingSubtitle = "Feito por k00tpts5673",
     ConfigurationSaving = {
         Enabled = true,
-        FolderName = "PainelLucas",
+        FolderName = "Painelk00",
         FileName = "config_base"
     }
 })
